@@ -1,0 +1,1 @@
+<?php include 'koneksi.php'; mysqli_query($koneksi, "DELETE FROM buku WHERE id_buku='$_GET[id]'"); header("location:dashboard.php"); ?>
