@@ -2,27 +2,41 @@
 session_start();
 include 'koneksi.php';
 
-// Cek Login
 if (!isset($_SESSION['login'])) header("location:index.php");
 
-// Ambil ID dari URL
-$id = $_GET['id'];
+// 1. Ambil ID dengan aman
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-// Ambil data buku berdasarkan ID
-$query = mysqli_query($koneksi, "SELECT * FROM buku WHERE id_buku='$id'");
-$d = mysqli_fetch_array($query);
+// 2. Ambil data lama untuk ditampilkan di form
+$stmt_get = mysqli_prepare($koneksi, "SELECT * FROM buku WHERE id_buku = ?");
+mysqli_stmt_bind_param($stmt_get, "i", $id);
+mysqli_stmt_execute($stmt_get);
+$result = mysqli_stmt_get_result($stmt_get);
+$d = mysqli_fetch_array($result);
 
-// Proses Update Data
+if(!$d) { echo "Data tidak ditemukan!"; exit; }
+
+// 3. Proses Update Data (Saat tombol ditekan)
 if(isset($_POST['update'])){
-    $judul = $_POST['judul'];
-    $pengarang = $_POST['pengarang'];
-    $penerbit = $_POST['penerbit'];
-    $tahun = $_POST['tahun'];
-    $rak = $_POST['rak'];
-
-    mysqli_query($koneksi, "UPDATE buku SET judul='$judul', pengarang='$pengarang', penerbit='$penerbit', tahun_terbit='$tahun', rak='$rak' WHERE id_buku='$id'");
+    // Siapkan query update dengan placeholder (?)
+    $stmt_upd = mysqli_prepare($koneksi, "UPDATE buku SET judul=?, jenis_buku=?, pengarang=?, penerbit=?, tahun_terbit=?, rak=? WHERE id_buku=?");
     
-    echo "<script>alert('Data Berhasil Diupdate!'); window.location='dashboard.php';</script>";
+    // Bind parameter (s=string, i=integer)
+    mysqli_stmt_bind_param($stmt_upd, "ssssisi", 
+        $_POST['judul'], 
+        $_POST['jenis_buku'],
+        $_POST['pengarang'], 
+        $_POST['penerbit'], 
+        $_POST['tahun'], 
+        $_POST['rak'],
+        $id
+    );
+
+    if(mysqli_stmt_execute($stmt_upd)){
+        echo "<script>alert('Data Berhasil Diupdate!'); window.location='dashboard.php';</script>";
+    } else {
+        echo "Gagal update: " . mysqli_error($koneksi);
+    }
 }
 ?>
 
@@ -43,26 +57,36 @@ if(isset($_POST['update'])){
 
         <form method="POST">
             <label>Judul Buku</label>
-            <input type="text" name="judul" value="<?php echo $d['judul']; ?>" required>
+            <input type="text" name="judul" value="<?php echo htmlspecialchars($d['judul']); ?>" required>
+
+            <label>Jenis Buku</label>
+            <select name="jenis_buku" required>
+                <option value="<?php echo $d['jenis_buku']; ?>"><?php echo $d['jenis_buku']; ?> (Saat ini)</option>
+                <option value="Pelajaran">Buku Pelajaran</option>
+                <option value="Novel">Novel / Fiksi</option>
+                <option value="Komik">Komik</option>
+                <option value="Jurnal">Jurnal Ilmiah</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
 
             <label>Pengarang</label>
-            <input type="text" name="pengarang" value="<?php echo $d['pengarang']; ?>" required>
+            <input type="text" name="pengarang" value="<?php echo htmlspecialchars($d['pengarang']); ?>" required>
 
             <label>Penerbit</label>
-            <input type="text" name="penerbit" value="<?php echo $d['penerbit']; ?>" required>
+            <input type="text" name="penerbit" value="<?php echo htmlspecialchars($d['penerbit']); ?>" required>
 
             <div style="display:flex; gap:10px;">
                 <div style="width:50%">
                     <label>Tahun</label>
-                    <input type="number" name="tahun" value="<?php echo $d['tahun_terbit']; ?>" required>
+                    <input type="number" name="tahun" value="<?php echo htmlspecialchars($d['tahun_terbit']); ?>" required>
                 </div>
                 <div style="width:50%">
                     <label>Rak</label>
-                    <input type="text" name="rak" value="<?php echo $d['rak']; ?>" required>
+                    <input type="text" name="rak" value="<?php echo htmlspecialchars($d['rak']); ?>" required>
                 </div>
             </div>
 
-            <button name="update" class="btn btn-warning" style="width:100%; margin-bottom:10px;">Update Data</button>
+            <button name="update" class="btn btn-warning" style="width:100%; margin-bottom:10px; margin-top:10px;">Update Data</button>
             <a href="dashboard.php" class="btn btn-danger" style="width:100%; text-align:center; display:block;">Batal</a>
         </form>
     </div>

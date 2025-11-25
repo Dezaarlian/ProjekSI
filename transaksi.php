@@ -27,7 +27,11 @@ if (!isset($_SESSION['login'])) header("location:index.php");
                 </thead>
                 <tbody>
                     <?php
-                    $q = mysqli_query($koneksi, "SELECT * FROM transaksi JOIN buku ON transaksi.id_buku = buku.id_buku ORDER BY id_transaksi DESC");
+                   // Kita join ke tabel buku DAN tabel anggota
+$q = mysqli_query($koneksi, "SELECT * FROM transaksi 
+                            LEFT JOIN buku ON transaksi.id_buku = buku.id_buku 
+                            LEFT JOIN anggota ON transaksi.id_anggota = anggota.id_anggota 
+                            ORDER BY id_transaksi DESC");
                     while($d = mysqli_fetch_array($q)){
                         // Hitung Jatuh Tempo (7 hari dari pinjam)
                         $jatuh_tempo = date('Y-m-d', strtotime($d['tgl_pinjam'] . ' + 7 days'));
@@ -42,7 +46,10 @@ if (!isset($_SESSION['login'])) header("location:index.php");
                         }
                     ?>
                     <tr>
-                        <td><?php echo $d['peminjam']; ?></td>
+                        <td>
+    <b><?php echo $d['nama_siswa']; ?></b><br>
+    <small style="color:#888"><?php echo $d['kelas']; ?></small>
+</td>
                         <td><?php echo $d['judul']; ?></td>
                         <td><?php echo $d['tgl_pinjam']; ?></td>
                         <td><?php echo $jatuh_tempo; ?></td>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2025 at 03:07 PM
+-- Generation Time: Nov 25, 2025 at 10:55 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,12 +44,36 @@ INSERT INTO `admin` (`id`, `username`, `password`, `nama_lengkap`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `anggota`
+--
+
+CREATE TABLE `anggota` (
+  `id_anggota` int(11) NOT NULL,
+  `nis` varchar(20) NOT NULL,
+  `nama_siswa` varchar(100) NOT NULL,
+  `kelas` varchar(50) NOT NULL,
+  `jurusan` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `anggota`
+--
+
+INSERT INTO `anggota` (`id_anggota`, `nis`, `nama_siswa`, `kelas`, `jurusan`) VALUES
+(1, '101', 'Budi Santoso', 'XII', 'RPL'),
+(2, '102', 'Siti Aminah', 'XI', 'TKJ'),
+(3, '103', 'Ahmad Dani', 'X', 'Multimedia');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `buku`
 --
 
 CREATE TABLE `buku` (
   `id_buku` int(11) NOT NULL,
   `judul` varchar(100) DEFAULT NULL,
+  `jenis_buku` varchar(50) DEFAULT NULL,
   `pengarang` varchar(100) DEFAULT NULL,
   `penerbit` varchar(100) DEFAULT NULL,
   `tahun_terbit` int(11) DEFAULT NULL,
@@ -60,10 +84,10 @@ CREATE TABLE `buku` (
 -- Dumping data for table `buku`
 --
 
-INSERT INTO `buku` (`id_buku`, `judul`, `pengarang`, `penerbit`, `tahun_terbit`, `rak`) VALUES
-(2, 'Belajar PHP', 'Rhama Krisna', 'Informatika', 2023, 'Rak B4'),
-(3, 'SI', 'ANI', 'ANU', 2011, 'B3'),
-(4, 'TI', 'Prisma', 'ert', 2023, 'B3');
+INSERT INTO `buku` (`id_buku`, `judul`, `jenis_buku`, `pengarang`, `penerbit`, `tahun_terbit`, `rak`) VALUES
+(2, 'Belajar PHP', NULL, 'Rhama Krisna', 'Informatika', 2023, 'Rak B4'),
+(3, 'SI', NULL, 'ANI', 'ANU', 2011, 'B3'),
+(4, 'TI', 'Pelajaran', 'Prisma', 'ert', 2023, 'B3');
 
 -- --------------------------------------------------------
 
@@ -74,24 +98,13 @@ INSERT INTO `buku` (`id_buku`, `judul`, `pengarang`, `penerbit`, `tahun_terbit`,
 CREATE TABLE `transaksi` (
   `id_transaksi` int(11) NOT NULL,
   `id_buku` int(11) DEFAULT NULL,
+  `id_anggota` int(11) DEFAULT NULL,
   `peminjam` varchar(100) DEFAULT NULL,
   `tgl_pinjam` date DEFAULT NULL,
   `tgl_kembali` date DEFAULT NULL,
   `denda` int(11) DEFAULT 0,
   `status` enum('pinjam','kembali') DEFAULT 'pinjam'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `transaksi`
---
-
-INSERT INTO `transaksi` (`id_transaksi`, `id_buku`, `peminjam`, `tgl_pinjam`, `tgl_kembali`, `denda`, `status`) VALUES
-(1, 2, 'wahyu', '2025-11-18', '2025-11-18', 0, 'kembali'),
-(2, 3, 'gistra', '2025-11-18', '2025-11-18', 0, 'kembali'),
-(3, 3, 'deza', '2025-11-18', '2025-11-18', 0, 'kembali'),
-(4, 4, 'deza', '2025-11-18', '2025-11-18', 0, 'kembali'),
-(5, 2, 'manda', '2025-11-20', '2025-11-20', 0, 'kembali'),
-(6, 3, 'manda', '2025-11-20', '2025-11-20', 0, 'kembali');
 
 --
 -- Indexes for dumped tables
@@ -102,6 +115,12 @@ INSERT INTO `transaksi` (`id_transaksi`, `id_buku`, `peminjam`, `tgl_pinjam`, `t
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `anggota`
+--
+ALTER TABLE `anggota`
+  ADD PRIMARY KEY (`id_anggota`);
 
 --
 -- Indexes for table `buku`
@@ -126,6 +145,12 @@ ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `anggota`
+--
+ALTER TABLE `anggota`
+  MODIFY `id_anggota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `buku`
 --
 ALTER TABLE `buku`
@@ -135,7 +160,7 @@ ALTER TABLE `buku`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
