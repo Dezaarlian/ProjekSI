@@ -50,7 +50,7 @@ if(isset($_POST['update'])){
 
     <div class="card" style="width:400px">
         <div style="text-align:center; margin-bottom:20px;">
-            <h3 style="color:var(--bg-dark)">✏️ Edit Buku</h3>
+            <h3 style="color:var(--bg-dark)">Edit Buku</h3>
             <p style="font-size:0.9rem; color:var(--text-grey)">Ubah data buku perpustakaan</p>
         </div>
         <hr style="margin:15px 0; border:0; border-top:1px solid #eee">

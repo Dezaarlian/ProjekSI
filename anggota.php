@@ -45,7 +45,7 @@ if (!isset($_SESSION['login'])) header("location:index.php");
                         <td><?php echo htmlspecialchars($d['kelas']); ?></td>
                         <td><?php echo htmlspecialchars($d['jurusan']); ?></td>
                         <td>
-                            <a href="edit_anggota.php?id=<?php echo $d['id_anggota']; ?>" class="btn btn-warning" style="padding:5px 10px; font-size:0.8rem">✏️ Edit</a>
+                            <a href="edit_anggota.php?id=<?php echo $d['id_anggota']; ?>" class="btn btn-warning" style="padding:5px 10px; font-size:0.8rem">Edit</a>
                             <a href="hapus_anggota.php?id=<?php echo $d['id_anggota']; ?>" class="btn btn-danger" style="padding:5px 10px; font-size:0.8rem" onclick="return confirm('Yakin hapus siswa ini? Data peminjaman terkait mungkin akan ikut terhapus/error.')">🗑️ Hapus</a>
                         </td>
                     </tr>

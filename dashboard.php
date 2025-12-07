@@ -7,7 +7,9 @@ if (!isset($_SESSION['login'])) header("location:index.php");
 ?>
 <!DOCTYPE html>
 <html>
-<head><title>Dashboard Buku</title><link rel="stylesheet" href="style.css"></head>
+<head><title>Dashboard Buku</title>
+<link rel="stylesheet" href="style.css">
+</head>
 <body>
     <?php include 'sidebar.php'; ?>
     
@@ -58,8 +60,8 @@ if (!isset($_SESSION['login'])) header("location:index.php");
                         <td><span class="badge bg-soft-green"><?php echo htmlspecialchars($d['rak']); ?></span></td>
                         
                         <td>
-                            <a href="edit_buku.php?id=<?php echo $d['id_buku']; ?>" class="btn btn-warning" style="padding:5px 10px; font-size:0.8rem; margin-right:5px;">✏️ Edit</a>
-                            <a href="hapus_buku.php?id=<?php echo $d['id_buku']; ?>" class="btn btn-danger" style="padding:5px 10px; font-size:0.8rem" onclick="return confirm('Yakin hapus buku ini?')">🗑️ Hapus</a>
+                            <a href="edit_buku.php?id=<?php echo $d['id_buku']; ?>" class="btn btn-warning" style="padding:5px 10px; font-size:0.8rem; margin-right:5px;">Edit</a>
+                            <a href="hapus_buku.php?id=<?php echo $d['id_buku']; ?>" class="btn btn-danger" style="padding:5px 10px; font-size:0.8rem" onclick="return confirm('Yakin hapus buku ini?')">Hapus</a>
                         </td>
                     </tr>
                     <?php } ?>
