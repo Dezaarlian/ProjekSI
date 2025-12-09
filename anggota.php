@@ -18,7 +18,7 @@ if (!isset($_SESSION['login'])) header("location:index.php");
         <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <h3>👥 Daftar Siswa</h3>
-                <a href="tambah_anggota.php" class="btn btn-primary">+ Verifikasi / Update Anggota</a>
+            
             </div>
             
             <table>
