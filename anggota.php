@@ -18,7 +18,7 @@ if (!isset($_SESSION['login'])) header("location:index.php");
         <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <h3>👥 Daftar Siswa</h3>
-                <a href="tambah_anggota.php" class="btn btn-primary">+ Tambah Anggota</a>
+                <a href="tambah_anggota.php" class="btn btn-primary">+ Verifikasi / Update Anggota</a>
             </div>
             
             <table>
@@ -46,7 +46,6 @@ if (!isset($_SESSION['login'])) header("location:index.php");
                         <td><?php echo htmlspecialchars($d['jurusan']); ?></td>
                         <td>
                             <a href="edit_anggota.php?id=<?php echo $d['id_anggota']; ?>" class="btn btn-warning" style="padding:5px 10px; font-size:0.8rem">Edit</a>
-                            <a href="hapus_anggota.php?id=<?php echo $d['id_anggota']; ?>" class="btn btn-danger" style="padding:5px 10px; font-size:0.8rem" onclick="return confirm('Yakin hapus siswa ini? Data peminjaman terkait mungkin akan ikut terhapus/error.')">Hapus</a>
                         </td>
                     </tr>
                     <?php } ?>

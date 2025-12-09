@@ -15,7 +15,7 @@ mysqli_stmt_execute($stmt_get);
 $result = mysqli_stmt_get_result($stmt_get);
 $d = mysqli_fetch_array($result);
 
-// Jika data tidak ditemukan (misal ID salah), kembalikan ke halaman anggota
+// Jika data tidak ditemukan
 if(!$d) { 
     echo "<script>alert('Data siswa tidak ditemukan!'); window.location='anggota.php';</script>"; 
     exit; 
@@ -23,12 +23,12 @@ if(!$d) {
 
 // 3. Proses Update Data (Saat tombol ditekan)
 if(isset($_POST['update'])){
-    // Siapkan query update menggunakan Prepared Statement
-    $stmt_upd = mysqli_prepare($koneksi, "UPDATE anggota SET nis=?, nama_siswa=?, kelas=?, jurusan=? WHERE id_anggota=?");
+    // PERUBAHAN DI SINI: Kita HAPUS 'nis' dari query UPDATE
+    // Jadi NIS tidak akan berubah di database meskipun user mencoba meretas form
+    $stmt_upd = mysqli_prepare($koneksi, "UPDATE anggota SET nama_siswa=?, kelas=?, jurusan=? WHERE id_anggota=?");
     
-    // Bind parameter (s=string, i=integer)
-    mysqli_stmt_bind_param($stmt_upd, "ssssi", 
-        $_POST['nis'], 
+    // Bind parameter (Hanya Nama, Kelas, Jurusan, dan ID)
+    mysqli_stmt_bind_param($stmt_upd, "sssi", 
         $_POST['nama'],
         $_POST['kelas'], 
         $_POST['jurusan'],
@@ -36,7 +36,7 @@ if(isset($_POST['update'])){
     );
 
     if(mysqli_stmt_execute($stmt_upd)){
-        echo "<script>alert('Data Anggota Berhasil Diupdate!'); window.location='anggota.php';</script>";
+        echo "<script>alert('✅ Data Anggota Berhasil Diupdate!'); window.location='anggota.php';</script>";
     } else {
         echo "Gagal update: " . mysqli_error($koneksi);
     }
@@ -59,8 +59,9 @@ if(isset($_POST['update'])){
         <hr style="margin:15px 0; border:0; border-top:1px solid #eee">
 
         <form method="POST">
-            <label>NIS (Nomor Induk)</label>
-            <input type="number" name="nis" value="<?php echo htmlspecialchars($d['nis']); ?>" required>
+            <label>NIS (Nomor Induk) - <i>Tidak bisa diubah</i></label>
+            <input type="text" name="nis" value="<?php echo htmlspecialchars($d['nis']); ?>" 
+                   readonly style="background-color: #e2e8f0; cursor: not-allowed; color: #64748b;">
             
             <label>Nama Lengkap</label>
             <input type="text" name="nama" value="<?php echo htmlspecialchars($d['nama_siswa']); ?>" required>
@@ -76,7 +77,7 @@ if(isset($_POST['update'])){
             <label>Jurusan</label>
             <input type="text" name="jurusan" value="<?php echo htmlspecialchars($d['jurusan']); ?>" required>
             
-            <button name="update" class="btn btn-warning" style="width:100%; margin-bottom:10px; margin-top:10px;">Update Data</button>
+            <button name="update" class="btn btn-warning" style="width:100%; margin-bottom:10px; margin-top:10px;">Simpan Perubahan</button>
             <a href="anggota.php" class="btn btn-danger" style="width:100%; text-align:center; display:block;">Batal</a>
         </form>
     </div>
