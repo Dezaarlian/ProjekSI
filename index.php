@@ -18,7 +18,7 @@ if (mysqli_num_rows($cek) > 0) {
 <head><title>Login PerpusPro</title><link rel="stylesheet" href="style.css"></head>
 <body class="login-body">
     <div class="login-card">
-        <h2>👋 Welcome Back</h2>
+        <h2>Selamat Datang, Min!</h2>
         <p>Silakan masuk untuk mengelola perpustakaan.</p>
         <form method="POST">
             <input type="text" name="user" placeholder="Username" required>
